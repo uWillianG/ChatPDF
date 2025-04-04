@@ -15,6 +15,7 @@ _ = load_dotenv(find_dotenv())
 
 from configs import *
 
+
 PASTA_ARQUIVOS = Path(__file__).parent / 'arquivos'
 
 def importacao_documentos():
@@ -53,7 +54,7 @@ def cria_chain_conversa():
     documentos = split_documentos(documentos)
     vector_store = cria_vector_store(documentos)
 
-    chat = ChatOpenAI(model=get_config('model_name'))
+    chat = ChatOpenAI(model=get_config('modelo'))
     memory = ConversationBufferMemory(
         return_messages=True,
         memory_key='chat_history',

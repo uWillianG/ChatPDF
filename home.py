@@ -36,7 +36,7 @@ def chat_window():
 
     #Quando não tiver uma chain
     if not 'chain' in st.session_state:
-        st.error('Faça o upload de PDFs para começar!')
+        st.warning('Faça o upload de PDFs para começar!')
         st.stop()
 
     chain = st.session_state['chain']
@@ -56,7 +56,8 @@ def chat_window():
         chat = container.chat_message('human') #classificando quem envia mensagem
         chat.markdown(nova_mensagem) #mostra nova mensagem do usuário
         chat = container.chat_message('ai')
-        chat.markdown('Gerando a resposta...')
+        placeholder = chat.empty()
+        placeholder.markdown('▌')
 
         resposta = chain.invoke({'question': nova_mensagem})
         st.session_state['ultima_resposta'] = resposta

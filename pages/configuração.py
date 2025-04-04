@@ -7,21 +7,30 @@ from utils import PASTA_ARQUIVOS, cria_chain_conversa
 def config_page():
     st.header('Página de configuração', divider=True)
 
-    model_name = st.text_input('Modifique o modelo', 
-                               value=get_config('model_name'))
-    retrieval_search_type = st.text_input('Modifique o tipo de retrieval', 
-                                          value=get_config('retrieval_search_type'))
-    retrieval_kwargs = st.text_input('Modifique os parâmetros de retrieval', 
-                                     value=json.dumps(get_config('retrieval_kwargs')))
+    tab,tab1,tab2 = st.sidebar.tabs(['Modelo','Tipo de busca','Parâmetros de busca'])
+
+    modelo_escolhido = tab.selectbox('Selecione o modelo',
+                                     ['gpt-4o-mini', 'gpt-3.5-turbo'],
+                                     index=None,
+                                     placeholder='Selecione o modelo de llm...')
+
+    retrieval_escolhido = tab1.selectbox('Selecione o tipo de busca',
+                                     ['mmr', 'similarity', 'hybrid'])
+
+    kwargs_escolhido = tab2.selectbox('Selecione o parâmetro de busca',
+                                     [{'k':5, 'fetch_k': 20}, 
+                                      {'k': 5, 'score_threshold': 0.7}, 
+                                      {'k': 5, 'alpha': 0.5, 'filter': {'category': 'Linguagem'}}])
+    
     prompt = st.text_area('Modifique o prompt padrão', 
                           height=350, value=get_config('prompt'))
 
 
     if st.button('Salvar parâmetros', use_container_width=True):
-        retrieval_kwargs = json.loads(retrieval_kwargs.replace("'", '"'))
-        st.session_state['model_name'] = model_name
-        st.session_state['retrieval_search_type'] = retrieval_search_type
-        st.session_state['retrieval_kwargs'] = retrieval_kwargs
+        #retrieval_kwargs = json.loads(kwargs_escolhido.replace("'", '"'))
+        st.session_state['modelo'] = modelo_escolhido
+        st.session_state['retrieval_search_type'] = retrieval_escolhido
+        st.session_state['retrieval_kwargs'] = kwargs_escolhido
         st.session_state['prompt'] = prompt
         st.rerun()
     

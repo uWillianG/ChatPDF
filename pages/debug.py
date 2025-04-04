@@ -9,7 +9,7 @@ def debug_page():
     prompt_template = PromptTemplate.from_template(prompt_template)
 
     if not 'ultima_resposta' in st.session_state:
-        st.error('Realize uma pergunta para o modelo para visualizar o debug')
+        st.warning('Realize uma pergunta para o modelo para visualizar o debug')
         st.stop()
 
     ultima_resposta = st.session_state['ultima_resposta']
